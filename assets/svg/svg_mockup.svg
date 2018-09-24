@@ -131,17 +131,17 @@
 
 <!-- Fill and inverse coloring in less opacity -->
 <use xlink:href="#colorText"
-    style="fill:#b6100b;fill-opacity:1;stroke:#b6100b"
+    style="fill:#b6100b;fill-opacity:1;stroke:#aaa"
     mask="url(#maskInverse)"></use>
 <use xlink:href="#colorText"
-    style="fill:#222;fill-opacity:1;stroke:#666f;opacity:0.4"
+    style="fill:#222;fill-opacity:1;stroke:#666;opacity:0.4"
     clip-path="url(#clipPathCircles)"></use>
 
 <use xlink:href="#greyText"
-    style="fill:#b6100b;fill-opacity:1;stroke:#b6100b;opacity:0.4"
+    style="fill:#b6100b;fill-opacity:1;stroke:#aaa;opacity:0.4"
     mask="url(#maskInverse)"></use>
 <use xlink:href="#greyText"
-    style="fill:#222;fill-opacity:1;stroke:#666f"
+    style="fill:#222;fill-opacity:1;stroke:#666"
     clip-path="url(#clipPathCircles)"></use>
 
 
