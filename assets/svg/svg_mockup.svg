@@ -70,32 +70,34 @@
 					d="m 0,0 q -2.125,8.09375 -3.90625,10.84375 -1.75,2.71875 -5.75,2.71875 h -33.87501 q -6.1875,-0.71875 -6.1875,-6.53125 v -25.59375 l -4.6875,3.71875 -3.96875,-3.53125 q 13.5625,-8.28125 20.28125,-22.78126 l 4.5,1.96875 q -0.59375,1.375 -2.4375,4.50001 h 20.34376 v 4.40625 q -2.25,4.6875 -4.59376,7.03125 h 13.37501 v 21 h -37.56251 v 9.15625 q 0,1.96875 1.96875,1.96875 h 32.78126 q 2.34375,0.4375 4.84375,-11 z M -21.25,-30.03 h -17.53125 q -2.46875,3.75 -5.5,6.78125 h 16.9375 q 3.65625,-2.65625 6.09375,-6.78125 z m 9.28126,23.09375 v -11.625 h -13.75001 v 11.625 z m -18.62501,0 v -11.625 h -13.875 v 11.625 z" />
 	</g>
 
-	<radialGradient id="exampleGradient">
+	<radialGradient id="largeCircleGradient">
 		<stop offset="0%" stop-color="#555"/>
 		<stop offset="50%" stop-color="#999"/>
 		<stop offset="80%" stop-color="black"/>
 	</radialGradient>
 
+	<radialGradient id="smallCircleGradient">
+		<stop offset="0%" stop-color="#aaa"/>
+		<stop offset="100%" stop-color="black"/>
+	</radialGradient>
+
 	<mask id="mask">
-		<circle cx="170" cy="300" r="250" fill="url(#exampleGradient)"/>
-		<circle cx="600" cy="200" r="150" fill="url(#exampleGradient)"/>
-		<circle cx="860" cy="200" r="80" fill="url(#exampleGradient)"/>
-		<!-- <circle cx="170" cy="300" r="250" fill="white"/>
-		<circle cx="600" cy="200" r="150" fill="white"/>
-		<circle cx="860" cy="200" r="80" fill="white"/> -->
+		<circle cx="180" cy="340" r="280" fill="url(#largeCircleGradient)"/>
+		<circle cx="600" cy="230" r="150" fill="url(#largeCircleGradient)"/>
+		<circle cx="860" cy="200" r="85" fill="url(#smallCircleGradient)"/>
 	</mask>
 
 	<clipPath id="clipPathCircles">
-		<circle cx="170" cy="300" r="250" fill="white"/>
-		<circle cx="600" cy="200" r="150" fill="white"/>
-		<circle cx="860" cy="200" r="80" fill="white"/>
+		<circle cx="180" cy="340" r="280" fill="white"/>
+		<circle cx="600" cy="230" r="150" fill="white"/>
+		<circle cx="860" cy="200" r="85" fill="white"/>
 	</clipPath>
 
 	<mask id="maskInverse">
 		<rect x="0" y="0" width="1000" height="500" fill="white" />
-		<circle cx="170" cy="300" r="250" fill="black"/>
-		<circle cx="600" cy="200" r="150" fill="black"/>
-		<circle cx="860" cy="200" r="80" fill="black"/>
+		<circle cx="180" cy="340" r="280" fill="black"/>
+		<circle cx="600" cy="230" r="150" fill="black"/>
+		<circle cx="860" cy="200" r="85" fill="black"/>
 	</mask>
 
 	<g id="image">
