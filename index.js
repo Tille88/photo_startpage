@@ -1,5 +1,6 @@
-// TODO:
-// opacity change on text mouseover/out?
+// NOTE TO SELF:
+// Avoid all kinds of array as elements for implementation, left now since easier. Have correct data structure from beginning when knowing mockup structure (makes it a hassle to get to eventlistener handlers to detach)
+// Hovering slow transition, now opacity only on/off. Can have clippath moving in from left for all letters, and from above for all characters
 (function(){
 	// Constructor function
 	var SvgAnim = function(){
@@ -12,9 +13,6 @@
 			'height': viewBox.height - viewBox.y
 		};
 
-		// this.greyText = document.querySelector('#greyText');
-		// this.colorText = document.querySelector('#colorText');
-		// this.greyTextBox = document.querySelectorAll('.greyTextBox');
 
 		var bigCircle = document.getElementById("bigCircle");
 		var midCircle = document.getElementById("midCircle");
@@ -32,8 +30,16 @@
 		// Display on load
 		this.svg.classList.remove('hidden');
 
-		this.greyTextBox = this.createShadowBB(document.querySelectorAll('.greyTextBox'));
-		this.colorTextBox = this.createShadowBB(document.querySelectorAll('.colorTextBox'));
+		var greyTextBoxes = document.querySelectorAll('.greyTextBox');
+		var colorTextBoxes = document.querySelectorAll('.colorTextBox');
+
+		this.overlayText = {
+			'grey': this.overlayText.call(this, 'grey', greyTextBoxes),
+			'color': this.overlayText.call(this, 'color', colorTextBoxes)
+		};
+		this.greyTextBox = this.createShadowBB(greyTextBoxes);
+		this.colorTextBox = this.createShadowBB(colorTextBoxes);
+
 		// Start circle animation
 		this.circleAnimIn();
 
@@ -42,10 +48,29 @@
 
 	};
 
+	var styles = {
+		'grey': "fill:#111;stroke:rgba(198, 21, 8, 0.4)",
+		'color': "fill:#b6100b;stroke:#aaa"
+	}
+
 	// Returns a given value in new range (e.g. 50 in [0,100] ro 0.5 in [0,1])
 	var linearConversion = function(val, oldRange, newRange){
 		if(!newRange) { newRange = [0,1]; }
 		return (val - oldRange[0]) * (newRange[1]-newRange[0]) / (oldRange[1]-oldRange[0]) + newRange[0];
+	};
+
+	// Need overlay of text since masks applied using <use> element
+	SvgAnim.prototype.overlayText = function(col, textBoxArr) {
+		var self = this;
+		var elemArr = [];
+		textBoxArr.forEach(function(group){
+			var clone = group.cloneNode(true);
+			clone.setAttributeNS(null, "opacity", 0);
+			clone.setAttributeNS(null, "style", styles[col]);
+			self.svg.appendChild(clone);
+			elemArr.push(clone);
+		});
+		return elemArr;
 	};
 
 	// Creates shadow boxes of text element for cursor to chenge during hover
@@ -81,18 +106,18 @@
 		var shrinking = false;
 		function step(time) {
 			if(!shrinking){
-				el.setAttribute("r", attributeVal*=1.08);
+				el.setAttributeNS(null, "r", attributeVal*=1.08);
 			}
 			if(attributeVal >= 3*originalAttrVal){
 				shrinking = true;
 			}
 			if(shrinking){
 				if(attributeVal < originalAttrVal){
-					el.setAttribute("r", originalAttrVal);
+					el.setAttributeNS(null, "r", originalAttrVal);
 					cancelAnimationFrame(step);
 					return;
 				}
-				el.setAttribute("r", attributeVal*=0.92);
+				el.setAttributeNS(null, "r", attributeVal*=0.92);
 			}
 			requestAnimationFrame(step);
 		}
@@ -116,17 +141,22 @@
 	};
 
 	// Attach event listeners
+	// DIRTY implementation since will not be detached
 	SvgAnim.prototype.attachEventListeners = function(){
 		var self = this;
 		// TODO: gather listeners to be removed for non-mockup implementation
 		this.svg.addEventListener('mousemove', throttle(this.moveTowardsMouse.bind(this), 30));
 
-		this.greyTextBox.map(function(textBox){
-			return self.addTextClickListener(textBox, 'grey');
+		this.greyTextBox.forEach(function(textBox){
+			self.addTextClickListener.call(self, textBox, 'grey');
+			self.addTextHoverListener.call(self, textBox, 'grey');
 		});
-		this.colorTextBox.map(function(textBox){
-			return self.addTextClickListener(textBox, 'color');
+		this.colorTextBox.forEach(function(textBox){
+			self.addTextClickListener.call(self, textBox, 'color');
+			self.addTextHoverListener.call(self, textBox, 'color');
 		});
+
+
 	};
 
 
@@ -135,6 +165,23 @@
 		return textBox.addEventListener('click', function(e){
 			var alertMsg = "Clicked: " + color.toUpperCase() + ". Todo: \n After outtransition, route to clicked section and cleanup (listeners etc.)"
 			alert(alertMsg);
+		});
+	};
+
+
+
+	// Hover is mouseover + mouseleave events
+	// Attaching to shadow element, changing path elements
+	SvgAnim.prototype.addTextHoverListener = function(textBox, color){
+		textBox.addEventListener('mouseover', (e) => {
+			this.overlayText[color].forEach(function(el){
+				el.setAttributeNS(null, "opacity", 1);
+			});
+		});
+		textBox.addEventListener('mouseleave', (e) => {
+			this.overlayText[color].forEach(function(el){
+				el.setAttributeNS(null, "opacity", 0);
+			});
 		});
 	};
 
@@ -154,8 +201,8 @@
 			// Set a max-offset, as multiple of radius (here for experimentation)
 			var maxOffset = 0.4;
 			// Move to position
-			circle.el.setAttribute("cx", circle.pos.x + distNormX * Math.sign(distX) * maxOffset * circle.pos.r);
-			circle.el.setAttribute("cy", circle.pos.y + distNormY * Math.sign(distY) * maxOffset * circle.pos.r);
+			circle.el.setAttributeNS(null, "cx", circle.pos.x + distNormX * Math.sign(distX) * maxOffset * circle.pos.r);
+			circle.el.setAttributeNS(null, "cy", circle.pos.y + distNormY * Math.sign(distY) * maxOffset * circle.pos.r);
 		});
 	};
 
