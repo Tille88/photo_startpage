@@ -1,5 +1,4 @@
 // TODO:
-// Comment up
 // opacity change on text mouseover/out?
 (function(){
 	// Constructor function
@@ -43,12 +42,13 @@
 
 	};
 
-
+	// Returns a given value in new range (e.g. 50 in [0,100] ro 0.5 in [0,1])
 	var linearConversion = function(val, oldRange, newRange){
 		if(!newRange) { newRange = [0,1]; }
 		return (val - oldRange[0]) * (newRange[1]-newRange[0]) / (oldRange[1]-oldRange[0]) + newRange[0];
 	};
 
+	// Creates shadow boxes of text element for cursor to chenge during hover
 	SvgAnim.prototype.createShadowBB = function(svgGroup) {
 		var self = this;
 		var elementCont = [];
@@ -67,13 +67,15 @@
 		return elementCont;
 	};
 
+	// For each circle, kicks of start animation
 	SvgAnim.prototype.circleAnimIn = function(){
 		this.circleArr.forEach((circleMod) => {
-			this.animateElementAttribute(circleMod.el);
+			this.animateCircleIn(circleMod.el);
 		});
 	};
 
-	SvgAnim.prototype.animateElementAttribute = function(el){
+	// A bit pedestrian, but first grows circle elements and then shrinks them
+	SvgAnim.prototype.animateCircleIn = function(el){
 		var originalAttrVal, attributeVal;
 		originalAttrVal = attributeVal = +el.getAttribute("r");
 		var shrinking = false;
@@ -97,6 +99,7 @@
 		requestAnimationFrame(step);
 	};
 
+	// Makes sure that a function is not called more often than given time limit
 	var throttle = function(fnc, lmt){
 		var runDuringLmt;
 		return function(){
@@ -112,6 +115,7 @@
 		};
 	};
 
+	// Attach event listeners
 	SvgAnim.prototype.attachEventListeners = function(){
 		var self = this;
 		// TODO: gather listeners to be removed for non-mockup implementation
@@ -126,6 +130,7 @@
 	};
 
 
+	// Text click given shadow rect element as input
 	SvgAnim.prototype.addTextClickListener = function(textBox, color){
 		return textBox.addEventListener('click', function(e){
 			var alertMsg = "Clicked: " + color.toUpperCase() + ". Todo: \n After outtransition, route to clicked section and cleanup (listeners etc.)"
@@ -133,6 +138,7 @@
 		});
 	};
 
+	// Clip-path/mask element (circles) are moved towards given mouseposition
 	SvgAnim.prototype.moveTowardsMouse = function(e){
 		var self = this;
 		this.circleArr.forEach(function(circle){
