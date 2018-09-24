@@ -12,15 +12,21 @@
 		svg{
 			width: 100%
 		}
+		.clickable{
+			cursor: pointer;
+		}
+		.hidden{
+			display: none;
+		}
 	</style>
 	<!-- Inline SVG for modification -->
-
 		<svg
 		xmlns:svg="http://www.w3.org/2000/svg"
 		xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink"
 		version="1.1"
 		viewBox="0 0 1000 500"
+		class="hidden"
 	>
 
 	<defs>
@@ -98,23 +104,31 @@
 			<stop offset="100%" stop-color="black"/>
 		</radialGradient>
 
+		<!-- <circle id="bigCircle" cx="180" cy="340" r="280" fill="url(#largeCircleGradient)"/>
+		<circle id="midCircle" cx="600" cy="230" r="150" fill="url(#largeCircleGradient)"/>
+		<circle id="smallCircle" cx="860" cy="200" r="85" fill="url(#smallCircleGradient)"/> -->
+
+		<circle id="bigCircle" cx="180" cy="340" r="280"/>
+		<circle id="midCircle" cx="600" cy="230" r="150"/>
+		<circle id="smallCircle" cx="860" cy="200" r="85"/>
+
 		<mask id="mask">
-			<circle cx="180" cy="340" r="280" fill="url(#largeCircleGradient)"/>
-			<circle cx="600" cy="230" r="150" fill="url(#largeCircleGradient)"/>
-			<circle cx="860" cy="200" r="85" fill="url(#smallCircleGradient)"/>
+				<use xlink:href="#bigCircle" fill="url(#largeCircleGradient)"></use>
+				<use xlink:href="#midCircle"  fill="url(#largeCircleGradient)"></use>
+				<use xlink:href="#smallCircle"  fill="url(#smallCircleGradient)"></use>
 		</mask>
 
 		<clipPath id="clipPathCircles">
-			<circle cx="180" cy="340" r="280" fill="white"/>
-			<circle cx="600" cy="230" r="150" fill="white"/>
-			<circle cx="860" cy="200" r="85" fill="white"/>
+				<use xlink:href="#bigCircle" fill="white"></use>
+				<use xlink:href="#midCircle"  fill="white"></use>
+				<use xlink:href="#smallCircle"  fill="white"></use>
 		</clipPath>
 
 		<mask id="maskInverse">
 			<rect x="0" y="0" width="1000" height="500" fill="white" />
-			<circle cx="180" cy="340" r="280" fill="black"/>
-			<circle cx="600" cy="230" r="150" fill="black"/>
-			<circle cx="860" cy="200" r="85" fill="black"/>
+			<use xlink:href="#bigCircle" fill="black"></use>
+			<use xlink:href="#midCircle"  fill="black"></use>
+			<use xlink:href="#smallCircle"  fill="black"></use>
 		</mask>
 
 		<g id="image">
@@ -164,6 +178,7 @@
 
 	</svg>
 
+	<script src="index.js"></script>
 
 </body>
 </html>
